@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react'
 
 const IntMark = () => {
+
+
     const [input, changeInput] = useState({
         name: "",
         admno: ''
@@ -12,8 +14,18 @@ const IntMark = () => {
         getexam2: '',
         getassmark1: '',
         getassmark2: ''
+
     });
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState({
+        Name: "",
+        Adminno: "",
+        Subject: "",
+        TotalInternalMarks: "",
+        Attendance: "",
+        ExamMarks: "",
+        AssignmentMarks: "",
+        email: ''
+    })
 
     const inputHandler = (event) => {
         changeInput({ ...input, [event.target.name]: event.target.value });
@@ -23,7 +35,7 @@ const IntMark = () => {
     const readvalues = (operation) => {
         console.log(input);
 
-        axios.post(`http://localhost:4000/${operation}`, input)
+        axios.post(`http://localhost:4000/calculate`, input)
             .then((response) => {
                 setResult(response.data.result);
                 console.log("Response", response.data.result);
@@ -49,14 +61,14 @@ const IntMark = () => {
 
 
                                 <label htmlFor="" className="form-label">Name </label>
-                                <input type="text" className="form-control" name='name' value={input.name} onChange={inputHandler} />
+                                <input type="text" className="form-control" name="name" value={input.name} onChange={inputHandler} />
 
 
                             </div>
                             <div className="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
 
                                 <label htmlFor="" className="form-label">Admission No </label>
-                                <input type="text" className="form-control" name='admno' value={input.admno} onChange={inputHandler}  />
+                                <input type="text" className="form-control" name='admno' value={input.admno} onChange={inputHandler} />
 
 
 
@@ -72,7 +84,7 @@ const IntMark = () => {
                             <div className="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
 
                                 <label htmlFor="" className="form-label">Present </label>
-                                <input type="text" className="form-control" name='present' value={input.present} onChange={inputHandler}  />
+                                <input type="text" className="form-control" name='present' value={input.present} onChange={inputHandler} />
 
 
 
@@ -90,7 +102,7 @@ const IntMark = () => {
                             <div className="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
 
                                 <label htmlFor="" className="form-label">Exam 1 </label>
-                                <input type="text" className="form-control" name='getexam1' v={input.getexam1} onChange={inputHandler} />
+                                <input type="text" className="form-control" name='getexam1' value={input.getexam1} onChange={inputHandler} />
 
 
                             </div>
@@ -119,18 +131,32 @@ const IntMark = () => {
 
 
                             </div>
+                            <div className="col col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                <label htmlFor="" className="form-label">Email</label>
+                                <input type="email" className="form-control" name='email' value={input.email} onChange={inputHandler} />
+                            </div>
 
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
 
-                                <button className="btn btn-success" onClick={() => readvalues("calculate")}>SUBMIT</button>
+                                <button className="btn btn-success" onClick={readvalues}>SUBMIT</button>
 
                             </div>
                         </div>
-<div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+                        <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
 
-                              <h4 className="text-center">Result: {result !== "" ? result : "N/A"}</h4>
-
+                            <div class="card" >
+                                <div class="card-body">
+                                    <h4 class="card-title">Name: {result.Name} </h4>
+                                    <h4 class="card-title">Admission Number: {result.Adminno} </h4>
+                                    <h4 class="card-title">Total Internal Marks: {result.TotalInternalMarks} </h4>
+                                    <h4 class="text-danger">Subject: {result.Subject} </h4>
+                                    <h4 class="card-title">Attandance Mark: {result.AssignmentMarks} </h4>
+                                    <h4 class="card-title">Assignment Mark: {result.AssignmentMarks} </h4>
+                                    <h4 class="card-title">Exam Mark: {result.ExamMarks} </h4>
+                                </div>
                             </div>
+
+                        </div>
 
 
                     </div>
@@ -138,7 +164,7 @@ const IntMark = () => {
 
 
 
-                
+
             </div>
 
 
